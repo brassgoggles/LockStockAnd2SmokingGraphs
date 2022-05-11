@@ -1,0 +1,8 @@
+﻿<Application x:Class="LockStockAnd2SmokingGraphs.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LockStockAnd2SmokingGraphs">
+    <Application.Resources>
+        
+    </Application.Resources>
+</Application>
