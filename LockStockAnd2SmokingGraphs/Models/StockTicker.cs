@@ -8,6 +8,10 @@ namespace LockStockAnd2SmokingGraphs.Models
 {
     public class StockTicker
     {
+        // Was going to use this class for further stock data but
+        // did not get around to it and it would require additional API calls.
+
+        // TODO: Demonstrate retrieving this data from an SQL db.
         public bool Active { get; set; }
         public string Cik { get; set; }
         public string CompositeFigi { get; set; }
@@ -20,7 +24,5 @@ namespace LockStockAnd2SmokingGraphs.Models
         public string ShareClassFigi { get; set; }
         public string Ticker { get; set; }
         public string Type { get; set; }
-
-
     }
 }

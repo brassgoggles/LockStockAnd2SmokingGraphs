@@ -5,18 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LockStockAnd2SmokingGraphs"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    
-    <Grid>
+        Title="Lock Stock + Two Smoking Graphs" Height="800" Width="800"
+        xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
+        xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=DotNetProjects.DataVisualization.Toolkit">
+
+    <Window.Resources>
+        <Style x:Key="SummaryChartAxisStyle" TargetType="{x:Type dvc:AxisLabel}">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5,0,10,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="{Binding Name, Mode=OneWay}" FontSize="20"
-               Grid.Row="0"/>
-        <TextBox Text="{Binding Name, Mode=TwoWay}"
-                 Grid.Row="1"></TextBox>
-        <TextBox Text="Text Box 2" Grid.Row="3"></TextBox>
+
+        <dvc:Chart Title="Yesterdays Closing Values" 
+                   CrosshairVisibility="Visible" Grid.Row="0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch">
+            <dvc:ColumnSeries Grid.Column="0"
+                              DependentValuePath="Value"
+                              IndependentValuePath="Key"
+                              ItemsSource="{Binding TodaysClosingData}" />
+        </dvc:Chart>
+
+        <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Tesla, Inc. Common Stock"
+                    MaxWidth="175" Margin="10" Padding="10" 
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="TSLA"/>
+            <Button Content="Microsoft Corp"
+                    MaxWidth="175" Margin="10" Padding="10"
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="MSFT"/>
+            <Button Content="Amazon.Com Inc"
+                    MaxWidth="175" Margin="10" Padding="10"
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="AMZN"/>
+            <Button Content="Alphabet Inc."
+                    MaxWidth="175" Margin="10" Padding="10"
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="GOOG"/>
+            <Button Content="Apple Inc."
+                    MaxWidth="175" Margin="10" Padding="10"
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="AAPL"/>
+        </WrapPanel>
+
+        <dvc:Chart Title="Previous 5 Days Closing" 
+                   CrosshairVisibility="Visible"
+                   Grid.Row="2">
+            <dvc:Chart.Axes>
+                <dvc:CategoryAxis Orientation="X" ShowGridLines="True"/>
+                <dvc:LogarithmicAxis Title="Closing Price"
+                                     MajorValues="100;500;1000;1500;2000;2500;3000"
+                                     Maximum="3000"
+                                     Minimum="100"
+                                     Orientation="Y"
+                                     ShowGridLines="True"/>
+            </dvc:Chart.Axes>
+            <dvc:LineSeries DependentValuePath="Value"
+                            IndependentValuePath="Key"
+                            IsSelectionEnabled="True"
+                            ItemsSource="{Binding LineData}" />
+        </dvc:Chart>
+
+        <StackPanel Grid.Row="3">
+            <Label Content="Ticker:"/>
+            <Label Content="{Binding .}"/>
+        </StackPanel>
     </Grid>
 </Window>

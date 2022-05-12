@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetProjects.DataVisualization.Toolkit, Version=6.1.94.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.WpfToolkit.DataVisualization.6.1.94\lib\net40\DotNetProjects.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -70,8 +73,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataServices.cs" />
-    <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\Aggregate.cs" />
     <Compile Include="Models\StockTicker.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\StockGraphViewModel.cs" />
     <Compile Include="Views\StockGraphView.xaml.cs">
