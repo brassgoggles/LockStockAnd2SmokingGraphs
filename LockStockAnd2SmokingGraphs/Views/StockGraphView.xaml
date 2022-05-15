@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LockStockAnd2SmokingGraphs"
         mc:Ignorable="d"
-        Title="Lock Stock + Two Smoking Graphs" Height="800" Width="800"
+        Title="Lock Stock + Two Smoking Graphs" Height="800" Width="1000"
         xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
-        xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=DotNetProjects.DataVisualization.Toolkit">
+        xmlns:uc="clr-namespace:LockStockAnd2SmokingGraphs.Resources.UserControls">
 
     <Window.Resources>
-        <Style x:Key="SummaryChartAxisStyle" TargetType="{x:Type dvc:AxisLabel}">
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="FontFamily" Value="Arial" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="5,0,10,0" />
-        </Style>
+        <ControlTemplate x:Key="stockToggleBtn" TargetType="Button">
+            <Button Content="{TemplateBinding Content}"
+                    MaxWidth="175" Margin="10" Padding="10" 
+                    Command="{Binding GetAggregateDataCommand}"
+                    CommandParameter="{TemplateBinding CommandParameter}"/>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
@@ -37,29 +37,24 @@
         </dvc:Chart>
 
         <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Tesla, Inc. Common Stock"
-                    MaxWidth="175" Margin="10" Padding="10" 
-                    Command="{Binding GetAggregateDataCommand}"
+            <Button Template="{StaticResource stockToggleBtn}"
+                    Content="Tesla, Inc. Common Stock"
                     CommandParameter="TSLA"/>
-            <Button Content="Microsoft Corp"
-                    MaxWidth="175" Margin="10" Padding="10"
-                    Command="{Binding GetAggregateDataCommand}"
+            <Button Template="{StaticResource stockToggleBtn}"
+                    Content="Microsoft Corp"
                     CommandParameter="MSFT"/>
-            <Button Content="Amazon.Com Inc"
-                    MaxWidth="175" Margin="10" Padding="10"
-                    Command="{Binding GetAggregateDataCommand}"
+            <Button Template="{StaticResource stockToggleBtn}"
+                    Content="Amazon.Com Inc"
                     CommandParameter="AMZN"/>
-            <Button Content="Alphabet Inc."
-                    MaxWidth="175" Margin="10" Padding="10"
-                    Command="{Binding GetAggregateDataCommand}"
+            <Button Template="{StaticResource stockToggleBtn}"
+                    Content="Alphabet Inc."
                     CommandParameter="GOOG"/>
-            <Button Content="Apple Inc."
-                    MaxWidth="175" Margin="10" Padding="10"
-                    Command="{Binding GetAggregateDataCommand}"
+            <Button Template="{StaticResource stockToggleBtn}"
+                    Content="Apple Inc."
                     CommandParameter="AAPL"/>
         </WrapPanel>
 
-        <dvc:Chart Title="Previous 5 Days Closing" 
+        <dvc:Chart Title="Previous 5 Days Closing Values" 
                    CrosshairVisibility="Visible"
                    Grid.Row="2">
             <dvc:Chart.Axes>
@@ -77,9 +72,16 @@
                             ItemsSource="{Binding LineData}" />
         </dvc:Chart>
 
-        <StackPanel Grid.Row="3">
-            <Label Content="Ticker:"/>
-            <Label Content="{Binding .}"/>
-        </StackPanel>
+        <WrapPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center">
+            <uc:DataBlock Title="Ticker" Value="{Binding SelectedStockAggregates.Key}"/>
+            <uc:DataBlock Title="Trading Volume" Value="{Binding SelectedStockAggregates.Value.V}"/>
+            <uc:DataBlock Title="Volume Weighted Average Price" Value="{Binding SelectedStockAggregates.Value.VW}"/>
+            <uc:DataBlock Title="Opening Price" Value="{Binding SelectedStockAggregates.Value.O}"/>
+            <uc:DataBlock Title="Closing Price" Value="{Binding SelectedStockAggregates.Value.C}"/>
+            <uc:DataBlock Title="Highest Price" Value="{Binding SelectedStockAggregates.Value.H}"/>
+            <uc:DataBlock Title="Lowest Price" Value="{Binding SelectedStockAggregates.Value.L}"/>
+            <uc:DataBlock Title="Unix Msec Time Stamp" Value="{Binding SelectedStockAggregates.Value.T}"/>
+            <uc:DataBlock Title="Number of Transactions" Value="{Binding SelectedStockAggregates.Value.N}"/>
+        </WrapPanel>
     </Grid>
 </Window>

@@ -33,6 +33,14 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
             get { return _lineData; }
             set { _lineData = value; OnPropertyChanged(); }
         }
+
+        private KeyValuePair<string, Aggregate> _selectedStockAggregates;
+
+        public KeyValuePair<string, Aggregate> SelectedStockAggregates
+        {
+            get { return _selectedStockAggregates; }
+            set { _selectedStockAggregates = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region Commands
@@ -45,8 +53,10 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
                 if (_getAggregateDataCommand == null)
                 {
                     _getAggregateDataCommand = new RelayCommand(param => {
-
                         List<Aggregate> aggregateData = AllAggregatesData.Where(a => a.Key == param.ToString()).FirstOrDefault().Value;
+
+                        // Get latest company data.
+                        SelectedStockAggregates = new KeyValuePair<string, Aggregate>(param.ToString(), aggregateData.LastOrDefault());
 
                         LineData = new ObservableCollection<KeyValuePair<string, double>>();
 
