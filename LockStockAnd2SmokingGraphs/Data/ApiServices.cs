@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LockStockAnd2SmokingGraphs
 {
-    public class DataServices
+    public class ApiServices
     {
         static HttpClient client = new HttpClient();
         // TODO: Probably put the request string in a better place (config file?).

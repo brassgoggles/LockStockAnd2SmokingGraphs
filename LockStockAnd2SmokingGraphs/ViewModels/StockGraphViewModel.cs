@@ -1,4 +1,5 @@
-﻿using LockStockAnd2SmokingGraphs.Models;
+﻿using LockStockAnd2SmokingGraphs.Data;
+using LockStockAnd2SmokingGraphs.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +42,14 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
             get { return _selectedStockAggregates; }
             set { _selectedStockAggregates = value; OnPropertyChanged(); }
         }
+
+        private StockTicker _companyInfo;
+
+        public StockTicker CompanyInfo
+        {
+            get { return _companyInfo; }
+            set { _companyInfo = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region Commands
@@ -53,27 +62,40 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
                 if (_getAggregateDataCommand == null)
                 {
                     _getAggregateDataCommand = new RelayCommand(param => {
-                        List<Aggregate> aggregateData = AllAggregatesData.Where(a => a.Key == param.ToString()).FirstOrDefault().Value;
-
-                        // Get latest company data.
-                        SelectedStockAggregates = new KeyValuePair<string, Aggregate>(param.ToString(), aggregateData.LastOrDefault());
-
-                        LineData = new ObservableCollection<KeyValuePair<string, double>>();
-
-                        int i = 1;
-
-                        // Build all the KeyValuePairs required for line graph, using
-                        // the date in correct format and the Closing stock value for the day.
-                        foreach (var aggregate in aggregateData)
-                        {
-                            LineData.Add(new KeyValuePair<string, double>(
-                                startDate.AddDays(i).ToString("yyyy-MM-dd"), aggregate.C));
-                            i++;
-                        }
+                        DisplayAggregatesData(param.ToString());
+                        DisplayCompanyInfoAsync(param.ToString());                        
                     });
                 }
                 return _getAggregateDataCommand;
             }
+        }
+
+        private void DisplayAggregatesData(string ticker)
+        {
+            List<Aggregate> aggregateData = AllAggregatesData.Where(a => a.Key == ticker).FirstOrDefault().Value;
+
+            // Get latest company data.
+            SelectedStockAggregates = new KeyValuePair<string, Aggregate>(ticker.ToString(), aggregateData.LastOrDefault());
+
+            LineData = new ObservableCollection<KeyValuePair<string, double>>();
+
+            int i = 1;
+
+            // Build all the KeyValuePairs required for line graph, using
+            // the date in correct format and the Closing stock value for the day.
+            foreach (var aggregate in aggregateData)
+            {
+                LineData.Add(new KeyValuePair<string, double>(
+                    startDate.AddDays(i).ToString("yyyy-MM-dd"), aggregate.C));
+                i++;
+            }
+        }
+
+        // Get the company info from SQL Server Db.
+        private async Task DisplayCompanyInfoAsync(string ticker)
+        {
+            DbServices db = new DbServices();
+            CompanyInfo = await db.GetStockTickerData(ticker);
         }
         #endregion
 
@@ -84,7 +106,7 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
 
         private async void InitData()
         {
-            DataServices db = new DataServices();
+            ApiServices api = new ApiServices();
 
             endDate = DateTime.Now.AddDays(-1);
             startDate = endDate.AddDays(-6);
@@ -94,7 +116,7 @@ namespace LockStockAnd2SmokingGraphs.ViewModels
 
             foreach (var ticker in Tickers)
             {
-                AggregatesResponse responseObj = await db.GetAggregatesAsync(ticker, startDate, endDate);
+                AggregatesResponse responseObj = await api.GetAggregatesAsync(ticker, startDate, endDate);
                 TodaysClosingData.Add(new KeyValuePair<string, double>(responseObj.Ticker, responseObj.Results.LastOrDefault().C));
 
                 // Cache "AllAggregatesData" to call assign to the LineData when ever required.
