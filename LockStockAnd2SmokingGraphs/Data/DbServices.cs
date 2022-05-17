@@ -12,19 +12,16 @@ namespace LockStockAnd2SmokingGraphs.Data
     {
         // TODO: Research how to properly secure a connection string in WPF.
         // Use config file?
-        private static string connectionString;
-
-        public DbServices()
-        {
-            connectionString = "Server=tcp:turtleshellsoftwaretestserver.database.windows.net,1433;" +
+        private const string _connString = "Server=tcp:turtleshellsoftwaretestserver.database.windows.net,1433;" +
                     "Initial Catalog=LockStockAnd2SmokingGraphsDb;Persist Security Info=False;" +
-                    "User ID=Turtleshell;Password={MY PASSWORD HERE};MultipleActiveResultSets=False;" +
+                    "User ID=Turtleshell;Password={ Your password here };MultipleActiveResultSets=False;" +
                     "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        }
+
+        public DbServices() { }
 
         public async Task<StockTicker> GetStockTickerData(string ticker)
         {
-            using (LockStockAnd2SmokingGraphsContext context = new LockStockAnd2SmokingGraphsContext(connectionString))
+            using (LockStockAnd2SmokingGraphsContext context = new LockStockAnd2SmokingGraphsContext(_connString))
             {
                 StockTicker stockTicker = new StockTicker();
 

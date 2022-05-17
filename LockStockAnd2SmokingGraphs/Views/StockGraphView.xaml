@@ -16,6 +16,10 @@
                     Command="{Binding GetAggregateDataCommand}"
                     CommandParameter="{TemplateBinding CommandParameter}"/>
         </ControlTemplate>
+        <ControlTemplate x:Key="companyInfoLbl" TargetType="Label">
+            <Label Content="{TemplateBinding Content}"
+                   FontSize="14" FontWeight="Bold"/>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
@@ -94,27 +98,38 @@
                 Padding="10">
             <StackPanel VerticalAlignment="Center">
                 <Label Content="Company/Stock Info." FontSize="16" />
-                <Label Content="Ticker:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Ticker:"/>
                 <Label Content="{Binding CompanyInfo.Ticker}" />
-                <Label Content="Name:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Name:"/>
                 <Label Content="{Binding CompanyInfo.Name}" />
-                <Label Content="Market:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Market:"/>
                 <Label Content="{Binding CompanyInfo.Market}" />
-                <Label Content="Locale:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Locale:"/>
                 <Label Content="{Binding CompanyInfo.Locale}" />
-                <Label Content="Primary exchange:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Primary exchange:"/>
                 <Label Content="{Binding CompanyInfo.PrimaryExchange}" />
-                <Label Content="Type:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Type:"/>
                 <Label Content="{Binding CompanyInfo.Type}" />
-                <Label Content="Active:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Active:"/>
                 <Label Content="{Binding CompanyInfo.Active}" />
-                <Label Content="Currency Name:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Currency name:"/>
                 <Label Content="{Binding CompanyInfo.CurrencyName}" />
-                <Label Content="CIK:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="CIK:"/>
                 <Label Content="{Binding CompanyInfo.Cik}" />
-                <Label Content="Composite figi:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Composite figi:"/>
                 <Label Content="{Binding CompanyInfo.CompositeFigi}" />
-                <Label Content="Share class figi:" />
+                <Label Template="{StaticResource companyInfoLbl}"
+                    Content="Share class figi:"/>
                 <Label Content="{Binding CompanyInfo.ShareClassFigi}" />
             </StackPanel>
         </Border>
